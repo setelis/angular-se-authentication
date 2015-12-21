@@ -1,0 +1,6 @@
+bower_components/
+node_modules/
+coverage/
+target/
+dist/
+html-angular-validate-report.json
