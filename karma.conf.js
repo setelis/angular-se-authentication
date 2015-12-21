@@ -25,7 +25,7 @@ module.exports = function(config) {
          "src/seAuthenticationService.js",
          "src/seAuthenticationPopupDirective.js",
          "src/loggedMemberFilter.js",
-         "src/isCurrenctlyLoggedFilter.js",
+         "src/isCurrentlyLoggedFilter.js",
          "src/isAdministratorFilter.js",
          "src/**/*.js",
          //"test/mock/**/*.js",

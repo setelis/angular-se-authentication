@@ -1,6 +1,6 @@
 {
   "name": "angular-se-authentication",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
       "angular": "~1.4.3",
       "lodash": "~3.10.1",
@@ -23,7 +23,7 @@
      "src/seAuthenticationService.js",
      "src/seAuthenticationPopupDirective.js",
      "src/loggedMemberFilter.js",
-     "src/isCurrenctlyLoggedFilter.js",
+     "src/isCurrentlyLoggedFilter.js",
      "src/isAdministratorFilter.js"
   ],
 
