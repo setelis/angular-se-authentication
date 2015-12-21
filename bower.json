@@ -1,12 +1,17 @@
 {
   "name": "angular-se-authentication",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
-    "angular": "~1.4.3"
+      "angular": "~1.4.3",
+      "lodash": "~3.10.1",
+      "restangular": "~1.5.1",
+      "angular-ui-router": "~0.2.15",
+      "angular-se-notifications": "~0.0.3",
+      "angular-se-ajax": "~0.0.1"
   },
   "devDependencies": {
-    "angular-mocks": "~1.4.3",
-    "angular-scenario": "~1.4.3"
+      "angular-mocks": "~1.4.3",
+      "angular-scenario": "~1.4.3"
   },
   "homepage": "https://github.com/setelis/angular-se-authentication",
   "authors": [
@@ -14,9 +19,12 @@
   ],
   "description": "Authentication helpers used in some Setelis projects.",
   "main": [
-     "src/seTablesModule.js",
-     "src/seTablesHeaderFixedDirective.js",
-     "css/seTables.css"
+     "src/seAuthenticationModule.js",
+     "src/seAuthenticationService.js",
+     "src/seAuthenticationPopupDirective.js",
+     "src/loggedMemberFilter.js",
+     "src/isCurrenctlyLoggedFilter.js",
+     "src/isAdministratorFilter.js"
   ],
 
   "keywords": [

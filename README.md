@@ -21,6 +21,7 @@ Authentication helpers used in some Setelis projects. Navigate to login if 401, 
  - restangular - used for sign in
  - angular-se-ajax
  - ui router - get state before login and return to it
+ - lodash - restangular
 
 # For developers:
 # Setup

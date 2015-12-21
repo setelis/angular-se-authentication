@@ -1,7 +1,7 @@
 /*jshint -W072 */
 angular.module("seAuthentication.service", ["restangular", "seNotifications.service",
-	"seAjax.helper", "seAjax.sniffer", "ui.router"]).service("SeAuthenticationService",
-	function(Restangular, $q, SeNotificationsService, $rootScope, $state, $injector, SeAjaxHelperService,
+	"seAjax.sniffer", "ui.router"]).service("SeAuthenticationService",
+	function(Restangular, $q, SeNotificationsService, $rootScope, $state,
 		SeAjaxRequestsSnifferService) {
 /*jshint +W072 */
 	"use strict";
