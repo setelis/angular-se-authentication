@@ -24,7 +24,7 @@ directive("seAuthenticationPopup", function (SeNotificationsService) {
 			scope.$watchCollection(function() {
 				return SeNotificationsService.notifications;
 			}, function(newValue) {
-				if (_.some(newValue, {tag: "notifications.SeAuthenticateService.unauthorized", severity: "ERROR"})) {
+				if (_.some(newValue, {tag: "notifications.SeAuthenticationService.unauthorized", severity: "ERROR"})) {
 					openDropdown(element);
 				}
 			});

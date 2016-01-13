@@ -1,7 +1,7 @@
 angular.module("seAuthentication.filter.loggedmember", ["seAuthentication.service"]).
-filter("loggedMember", function(SeAuthenticateService) {
+filter("loggedMember", function(SeAuthenticationService) {
 	"use strict";
 	return function() {
-		return SeAuthenticateService.currentLoggedMemberHolder.member;
+		return SeAuthenticationService.currentLoggedMemberHolder.member;
 	};
 });
