@@ -1,5 +1,5 @@
 angular.module("seAuthentication.popup", ["seNotifications.service", "ui.router"]).
-directive("seAuthenticationPopup", function (SeNotificationsService) {
+directive("seAuthenticationPopup", function (SeNotificationsService, SeAuthenticationService) {
 	"use strict";
 	function closeDropdown(element) {
 		if (element.parent().is(".open")) {
@@ -20,15 +20,12 @@ directive("seAuthenticationPopup", function (SeNotificationsService) {
 			scope.$on("$stateChangeStart", function() {
 				closeDropdown(element);
 			});
-			// this should be done using SeAuthenticationService:
-			scope.$watchCollection(function() {
-				return SeNotificationsService.notifications;
-			}, function(newValue) {
-				if (_.some(newValue, {tag: "notifications.SeAuthenticationService.unauthorized", severity: "ERROR"})) {
+			var unregister = SeAuthenticationService.addAuthenticationListener({
+				onLoginRequired: function() {
 					openDropdown(element);
 				}
 			});
-
+			scope.$on("$destroy", unregister);
 		}
 	};
 });

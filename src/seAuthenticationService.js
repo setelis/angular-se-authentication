@@ -9,23 +9,33 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 	var TAG_401 = "notifications.SeAuthenticationService.unauthorized";
 
 	var service = this;
-	// endpoint should be in config:
-	var authenticateEndpoint = Restangular.all("authenticate");
 
 	var stateBeforeLogin = null;
 	// used to populate the logged member
 	var deferred = $q.defer();
+	var authenticationListeners = [];
 
 	service.currentLoggedMemberHolder = {
 		member: null,
 		logged: null
 	};
 
+	function notifyAuthenticationListeners(method, param1) {
+		_.forEach(authenticationListeners, function(nextValue) {
+			if (!nextValue[method]) {
+				return;
+			}
+			nextValue[method](param1);
+		});
+	}
+
 	function setNotLogged() {
 		service.currentLoggedMemberHolder.member = null;
 		service.currentLoggedMemberHolder.logged = false;
 		deferred.reject(); // no member logged in
 		deferred = $q.defer();
+
+		notifyAuthenticationListeners("onNotLogged", undefined);
 
 		// see setLogged() comment (why promise is used here)
 		return $q.when(false);
@@ -35,11 +45,16 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		service.currentLoggedMemberHolder.logged = !!response;
 		deferred.resolve(response);
 
+		notifyAuthenticationListeners("onLogged", response);
+
 		// promise is used because additional data may be fetched from the server before "in logged" state in the future
 		return $q.when(response);
 	}
 
 	function attachMethods() {
+		// endpoint should be in config:
+		var authenticateEndpoint = Restangular.all("authenticate");
+
 		function initLoggedMember(response, showError) {
 			if (!response) {
 				if (service.currentLoggedMemberHolder.logged) {
@@ -86,6 +101,12 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		service.reloadLoggedMember = function(showError) {
 			return authenticateEndpoint.customGET().then(_.partialRight(initLoggedMember, showError));
 		};
+		service.addAuthenticationListener = function(authenticationListener) {
+			authenticationListeners.push(authenticationListener);
+			return function() {
+				_.pull(authenticationListeners, authenticationListener);
+			};
+		};
 	}
 	function attachListeners() {
 		function onStateChange() {
@@ -115,6 +136,8 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 				if ([401, 403].indexOf(errorResponse.status) === -1) {
 					return;
 				}
+				notifyAuthenticationListeners("onLoginRequired", undefined);
+
 				stateBeforeLogin = {
 					fromState: $state.current,
 					fromParams: angular.copy($state.params)
