@@ -1,5 +1,5 @@
 angular.module("seAuthentication.popup", ["seNotifications.service", "ui.router"]).
-directive("seAuthenticationPopup", function (SeNotificationsService, SeAuthenticationService) {
+directive("seAuthenticationPopup", function (SeAuthenticationService) {
 	"use strict";
 	function closeDropdown(element) {
 		if (element.parent().is(".open")) {
