@@ -10,10 +10,8 @@ Authentication helpers used in some Setelis projects. Navigate to login if 401, 
  - Add module to your project: ```angular.module("DemoApp", ["seAuthentication"])...```
 
  - TODO
-# Note:
- - filters are not marked as stateful, so they should be used with scope as first parameter, e.g.: ```this | isCurrentlyLogged``` or something similar
 # Other code fragments:
-```<div data-se-loading="((this | isCurrentlyLogged) === true) || ((this | isCurrentlyLogged) === false)"></div>```
+```<div data-se-loading="((true | isCurrentlyLogged) === true) || ((true | isCurrentlyLogged) === false)"></div>```
 
 
 # Dependencies:
