@@ -87,8 +87,9 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		};
 
 		service.logout = function() {
-			initLoggedMember(null, false);
-			return authenticateEndpoint.remove();
+			return authenticateEndpoint.remove().then(function() {
+				initLoggedMember(null, false);
+			});
 		};
 
 		service.getLoggedMember = function() {
