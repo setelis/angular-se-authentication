@@ -10,10 +10,37 @@ Authentication helpers used in some Setelis projects. Navigate to login if 401, 
  - Add module to your project: ```angular.module("DemoApp", ["seAuthentication"])...```
 
  - TODO
+
 # Other code fragments:
+ * show waiter while fetching user:
+
 ```<div data-se-loading="((true | isCurrentlyLogged) === true) || ((true | isCurrentlyLogged) === false)"></div>```
+ * Redirect to login page:
 
+```javascript
+angular.module("someApp").service("NavigateToLoginService", function(SeAuthenticationService, $state) {
+	"use strict";
+	var service = this;
 
+	function initMethods() {
+		service.$$init = function() {
+
+			SeAuthenticationService.addAuthenticationListener({
+				onNotLogged: function() {
+               // custom logic (when to navigate) can be added here
+					$state.go("home.authenticate.login");
+				}
+			});
+
+		};
+	}
+	initMethods();
+}).run(function(NavigateToLoginService) {
+	"use strict";
+	NavigateToLoginService.$$init();
+});
+
+```
 # Dependencies:
  - angular-se-notifications
  - restangular - used for sign in
