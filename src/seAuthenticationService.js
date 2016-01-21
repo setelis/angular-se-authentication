@@ -111,18 +111,16 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 	}
 	function attachListeners() {
 		function onStateChange() {
-			$rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+			$rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
 				if (toState.name.indexOf(".login", toState.name.length - ".login".length) !== -1) {
 					if (toParams.redirecto) {
 						stateBeforeLogin = { fromUrl: toParams.redirecto };
-					} else {
-						stateBeforeLogin = {
-							fromState: fromState,
-							fromParams: fromParams
-						};
 					}
 				} else {
-					stateBeforeLogin = null;
+					stateBeforeLogin = {
+						fromState: toState,
+						fromParams: toParams
+					};
 				}
 				service.reloadLoggedMember(false, true);
 			});
