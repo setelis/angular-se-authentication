@@ -79,24 +79,16 @@ describe("SeAuthenticationService", function () {
 		it("should call onLoginRequired and onNotLogged when request returns 401", function() {
 			login();
 			expect(SeAjaxRequestsSnifferService.onRequestError.calls.count()).toBe(1);
-			$httpBackend.expectPOST("/logs", function(data) {
-				return data.indexOf("\\\"template\\\":\\\"notifications.SeAuthenticationService.unauthorized\\\"") !== -1;
-			}).respond(200, "");
 
 			SeAjaxRequestsSnifferService.onRequestError.calls.first().args[1]({status: 401});
-			$httpBackend.flush();
 
 			expectCallOnLoginRequired();
 		});
 		it("should call onLoginRequired and onNotLogged when request returns 403", function() {
 			login();
 			expect(SeAjaxRequestsSnifferService.onRequestError.calls.count()).toBe(1);
-			$httpBackend.expectPOST("/logs", function(data) {
-				return data.indexOf("\\\"template\\\":\\\"notifications.SeAuthenticationService.unauthorized\\\"") !== -1;
-			}).respond(200, "");
 
 			SeAjaxRequestsSnifferService.onRequestError.calls.first().args[1]({status: 403});
-			$httpBackend.flush();
 
 			expectCallOnLoginRequired();
 		});
@@ -114,12 +106,8 @@ describe("SeAuthenticationService", function () {
 		it("should unregister listener", function() {
 			login();
 			expect(SeAjaxRequestsSnifferService.onRequestError.calls.count()).toBe(1);
-			$httpBackend.expectPOST("/logs", function(data) {
-				return data.indexOf("\\\"template\\\":\\\"notifications.SeAuthenticationService.unauthorized\\\"") !== -1;
-			}).respond(200, "");
 			unregister();
 			SeAjaxRequestsSnifferService.onRequestError.calls.first().args[1]({status: 403});
-			$httpBackend.flush();
 
 			expectNoCalls();
 		});

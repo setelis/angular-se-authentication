@@ -6,7 +6,6 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 /*jshint +W072 */
 	"use strict";
 	var TAG_LOGOUT = "notifications.SeAuthenticationService.logout";
-	var TAG_401 = "notifications.SeAuthenticationService.unauthorized";
 
 	var service = this;
 
@@ -64,7 +63,6 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 				return setNotLogged();
 			} else {
 				SeNotificationsService.removeTag(TAG_LOGOUT);
-				SeNotificationsService.removeTag(TAG_401);
 				return setLogged(response);
 			}
 		}
@@ -142,7 +140,6 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 					fromParams: angular.copy($state.params)
 				};
 
-				SeNotificationsService.showNotificationError(TAG_401);
 				setNotLogged();
 			});
 		}
