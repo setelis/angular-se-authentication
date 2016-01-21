@@ -28,6 +28,9 @@ module.exports = function(config) {
          "src/loggedMemberFilter.js",
          "src/isCurrentlyLoggedFilter.js",
          "src/isAdministratorFilter.js",
+         "src/seAuthenticationTranslations.js",
+         "src/seAuthenticationTranslations.en.js",
+         "src/seAuthenticationTranslations.bg.js",
          "src/**/*.js",
          //"test/mock/**/*.js",
          "test/spec/**/*.js"
