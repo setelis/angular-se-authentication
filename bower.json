@@ -1,6 +1,6 @@
 {
   "name": "angular-se-authentication",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "dependencies": {
     "angular": "~1.4.3",
     "lodash": "~3.10.1",
