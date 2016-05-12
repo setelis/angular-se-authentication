@@ -98,6 +98,19 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			service.reloadLoggedMember = function(showError) {
 				return CONFIGURED_OPTIONS.endpoints.reload().then(_.partialRight(initLoggedMember, showError));
 			};
+			service.checkMember = function() {
+				if (service.currentLoggedMemberHolder.logged) {
+					return CONFIGURED_OPTIONS.endpoints.check().then(function(response) {
+						if (response) {
+							// this is just check - if user is logged - do not change member (use it again)
+							response = service.currentLoggedMemberHolder.member;
+						}
+						return initLoggedMember(response, false);
+					});
+				} else {
+					return service.reloadLoggedMember(false);
+				}
+			};
 			service.addAuthenticationListener = function(authenticationListener) {
 				authenticationListeners.push(authenticationListener);
 				return function() {
@@ -118,7 +131,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 							fromParams: toParams
 						};
 					}
-					service.reloadLoggedMember(false, true);
+					service.checkMember();
 				});
 
 				if ($state.params[CONFIGURED_OPTIONS.params.redirect]) {
@@ -178,6 +191,9 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 						return defaultAuthenticateEndpoint.remove();
 					},
 					reload: function() {
+						return defaultAuthenticateEndpoint.customGET();
+					},
+					check: function() {
 						return defaultAuthenticateEndpoint.customGET();
 					}
 				};
