@@ -1,4 +1,4 @@
-describe("SeAuthenticationService", function () {
+describe("SeAuthenticationService", function() {
 	"use strict";
 	var SeAuthenticationService;
 	var $httpBackend, $rootScope;
@@ -10,7 +10,7 @@ describe("SeAuthenticationService", function () {
 
 		$provide.value("SeAjaxRequestsSnifferService", SeAjaxRequestsSnifferService);
 	}));
-	beforeEach(inject(function (_SeAuthenticationService_, _$httpBackend_, _$rootScope_) {
+	beforeEach(inject(function(_SeAuthenticationService_, _$httpBackend_, _$rootScope_) {
 		SeAuthenticationService = _SeAuthenticationService_;
 		$httpBackend = _$httpBackend_;
 		$rootScope = _$rootScope_;

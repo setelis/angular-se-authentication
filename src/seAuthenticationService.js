@@ -1,9 +1,8 @@
 /*jshint -W072 */
 angular.module("seAuthentication.service", ["restangular", "seNotifications.service",
-	"seAjax.sniffer", "ui.router"]).service("SeAuthenticationService",
-	function(Restangular, $q, SeNotificationsService, $rootScope, $state,
-		SeAjaxRequestsSnifferService) {
-/*jshint +W072 */
+	"seAjax.sniffer", "ui.router"]).service("SeAuthenticationService", function(Restangular, $q, SeNotificationsService, $rootScope, $state,
+	SeAjaxRequestsSnifferService) {
+	/*jshint +W072 */
 	"use strict";
 	var TAG_LOGOUT = "notifications.SeAuthenticationService.logout";
 
@@ -57,7 +56,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		function initLoggedMember(response, showError) {
 			if (!response) {
 				if (service.currentLoggedMemberHolder.logged) {
-					var showMessage = showError?SeNotificationsService.showNotificationError:SeNotificationsService.showNotificationInfo;
+					var showMessage = showError ? SeNotificationsService.showNotificationError : SeNotificationsService.showNotificationInfo;
 					showMessage(TAG_LOGOUT);
 				}
 				return setNotLogged();
@@ -112,7 +111,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			$rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
 				if (toState.name.indexOf(".login", toState.name.length - ".login".length) !== -1) {
 					if (toParams.redirecto) {
-						stateBeforeLogin = { fromUrl: toParams.redirecto };
+						stateBeforeLogin = {fromUrl: toParams.redirecto};
 					}
 				} else {
 					stateBeforeLogin = {
@@ -124,7 +123,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			});
 
 			if ($state.params.redirecto) {
-				stateBeforeLogin = { fromUrl: $state.params.redirecto };
+				stateBeforeLogin = {fromUrl: $state.params.redirecto};
 			}
 		}
 		function on401() {
