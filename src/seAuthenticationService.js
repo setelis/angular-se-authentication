@@ -4,7 +4,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 	var provider = this;
 
 	/*jshint -W072 */
-	function SeAuthenticationService(Restangular, $q, SeNotificationsService, $rootScope, $state,
+	function SeAuthenticationService($q, SeNotificationsService, $rootScope, $state,
 		SeAjaxRequestsSnifferService, CONFIGURED_OPTIONS) {
 		/*jshint +W072 */
 		var TAG_LOGOUT = "notifications.SeAuthenticationService.logout";
@@ -52,9 +52,6 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		}
 
 		function attachMethods() {
-			// endpoint should be in config:
-			var authenticateEndpoint = Restangular.all("authenticate");
-
 			function initLoggedMember(response, showError) {
 				if (!response) {
 					if (service.currentLoggedMemberHolder.logged) {
@@ -69,7 +66,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			}
 
 			service.login = function(loginDTO) {
-				return authenticateEndpoint.post(loginDTO).then(function(response) {
+				return CONFIGURED_OPTIONS.endpoints.login(loginDTO).then(function(response) {
 					var promise = initLoggedMember(response, false);
 
 					var result = stateBeforeLogin;
@@ -86,7 +83,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			};
 
 			service.logout = function() {
-				return authenticateEndpoint.remove().then(function() {
+				return CONFIGURED_OPTIONS.endpoints.logout.then(function() {
 					initLoggedMember(null, false);
 				});
 			};
@@ -99,7 +96,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 				return deferred.promise;
 			};
 			service.reloadLoggedMember = function(showError) {
-				return authenticateEndpoint.customGET().then(_.partialRight(initLoggedMember, showError));
+				return CONFIGURED_OPTIONS.endpoints.reload().then(_.partialRight(initLoggedMember, showError));
 			};
 			service.addAuthenticationListener = function(authenticationListener) {
 				authenticationListeners.push(authenticationListener);
@@ -153,6 +150,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 
 		service.reloadLoggedMember(false);
 	}
+
 	var DEFAULT_OPTIONS = {
 		params: {
 			redirect: "redirectto"
@@ -169,8 +167,23 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 	provider.$get = ["Restangular", "$q", "SeNotificationsService", "$rootScope", "$state", "SeAjaxRequestsSnifferService",
 		function SeSearchHelperServiceFactory(Restangular, $q, SeNotificationsService, $rootScope, $state, SeAjaxRequestsSnifferService) {
 			var effectiveOptions = _.assign({}, DEFAULT_OPTIONS, customizedOptions);
+			if (!effectiveOptions.endpoints) {
+				var defaultAuthenticateEndpoint = Restangular.all("authenticate");
 
-			return new SeAuthenticationService(Restangular, $q, SeNotificationsService, $rootScope, $state, SeAjaxRequestsSnifferService, effectiveOptions);
+				effectiveOptions.endpoints = {
+					login: function(loginDto) {
+						return defaultAuthenticateEndpoint.post(loginDto);
+					},
+					logout: function() {
+						return defaultAuthenticateEndpoint.remove();
+					},
+					reload: function() {
+						return defaultAuthenticateEndpoint.customGET();
+					}
+				};
+			}
+
+			return new SeAuthenticationService($q, SeNotificationsService, $rootScope, $state, SeAjaxRequestsSnifferService, effectiveOptions);
 		}
 	];
 
