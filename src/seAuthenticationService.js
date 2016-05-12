@@ -8,8 +8,6 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		SeAjaxRequestsSnifferService, CONFIGURED_OPTIONS) {
 		/*jshint +W072 */
 		var TAG_LOGOUT = "notifications.SeAuthenticationService.logout";
-		// TODO:
-		CONFIGURED_OPTIONS.a = "b";
 		var service = this;
 
 		var stateBeforeLogin = null;
@@ -114,8 +112,8 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			function onStateChange() {
 				$rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
 					if (toState.name.indexOf(".login", toState.name.length - ".login".length) !== -1) {
-						if (toParams.redirecto) {
-							stateBeforeLogin = {fromUrl: toParams.redirecto};
+						if (toParams[CONFIGURED_OPTIONS.params.redirect]) {
+							stateBeforeLogin = {fromUrl: toParams[CONFIGURED_OPTIONS.params.redirect]};
 						}
 					} else {
 						stateBeforeLogin = {
@@ -126,8 +124,8 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 					service.reloadLoggedMember(false, true);
 				});
 
-				if ($state.params.redirecto) {
-					stateBeforeLogin = {fromUrl: $state.params.redirecto};
+				if ($state.params[CONFIGURED_OPTIONS.params.redirect]) {
+					stateBeforeLogin = {fromUrl: $state.params[CONFIGURED_OPTIONS.params.redirect]};
 				}
 			}
 			function on401() {
@@ -156,6 +154,9 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 		service.reloadLoggedMember(false);
 	}
 	var DEFAULT_OPTIONS = {
+		params: {
+			redirect: "redirectto"
+		}
 	};
 	var customizedOptions;
 
