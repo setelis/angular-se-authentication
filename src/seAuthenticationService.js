@@ -177,10 +177,11 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 	provider.getDefaultOptions = function() {
 		return angular.copy(DEFAULT_OPTIONS);
 	};
-	provider.$get = ["Restangular", "$q", "SeNotificationsService", "$rootScope", "$state", "SeAjaxRequestsSnifferService",
-		function SeSearchHelperServiceFactory(Restangular, $q, SeNotificationsService, $rootScope, $state, SeAjaxRequestsSnifferService) {
+	provider.$get = ["Restangular", "$q", "SeNotificationsService", "$rootScope", "$state", "SeAjaxRequestsSnifferService", "$injector",
+		function SeSearchHelperServiceFactory(Restangular, $q, SeNotificationsService, $rootScope, $state, SeAjaxRequestsSnifferService, $injector) {
 			var effectiveOptions = _.assign({}, DEFAULT_OPTIONS, customizedOptions);
 			if (!effectiveOptions.endpoints) {
+				// TODO use config to move this part to default options
 				var defaultAuthenticateEndpoint = Restangular.all("authenticate");
 
 				effectiveOptions.endpoints = {
@@ -197,6 +198,9 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 						return defaultAuthenticateEndpoint.customGET();
 					}
 				};
+			} else {
+				// config is used because Restangular can't be injected in config phase
+				effectiveOptions.endpoints.config($injector);
 			}
 
 			return new SeAuthenticationService($q, SeNotificationsService, $rootScope, $state, SeAjaxRequestsSnifferService, effectiveOptions);
