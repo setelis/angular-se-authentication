@@ -83,7 +83,7 @@ angular.module("seAuthentication.service", ["restangular", "seNotifications.serv
 			};
 
 			service.logout = function() {
-				return CONFIGURED_OPTIONS.endpoints.logout.then(function() {
+				return CONFIGURED_OPTIONS.endpoints.logout().then(function() {
 					initLoggedMember(null, false);
 				});
 			};
